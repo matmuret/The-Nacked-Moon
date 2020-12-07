@@ -3,6 +3,15 @@ import dataShop from "./dataShop.js";
 
 const app=express();
 
+app.get("/api/Shop/:id", (req,res)=>{
+    const product=dataShop.products.find(x=>x._id === req.params.id);
+    if(product){
+        res.send(product);
+    }else{
+        res.status(404).send({message:"Product not found"})
+    }
+});
+
 app.get("/api/Shop", (req,res)=>{
     res.send(dataShop.products)
 })
