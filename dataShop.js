@@ -1,4 +1,4 @@
-import bcrypt from 'bcryptjs';
+import bcrypt from "bcryptjs";
 
 const dataShop = {
   users: [
@@ -6,19 +6,19 @@ const dataShop = {
       name: "Filippo",
       email: "filippo.moretti6@gmail",
       password: bcrypt.hashSync("1234", 8),
-      isAdmin:true,
+      isAdmin: true,
     },
     {
-        name: "John",
-        email: "filippo.cicco6@gmail",
-        password: bcrypt.hashSync("1234", 8),
-        isAdmin:true,
-      },
+      name: "John",
+      email: "filippo.cicco6@gmail",
+      password: bcrypt.hashSync("1234", 8),
+      isAdmin: true,
+    },
   ],
   products: [
     {
-      _id: "1",
       name: "product 1",
+      date:"1982-11-26",
       category: "season 1",
       image: "product-1.jpeg",
       price: 80,
@@ -28,8 +28,8 @@ const dataShop = {
       description: "Suuuper coool!!!",
     },
     {
-      _id: "2",
       name: "product 2",
+      date:"1982-11-26",
       category: "season 1",
       image: "product-2.jpeg",
       price: 80,
@@ -39,8 +39,8 @@ const dataShop = {
       description: "Suuuper coool!!!",
     },
     {
-      _id: "3",
       name: "product 3",
+      date:"1982-11-26",
       category: "season 1",
       image: "product-3.jpeg",
       price: 80,
@@ -50,8 +50,8 @@ const dataShop = {
       description: "Suuuper coool!!!",
     },
     {
-      _id: "4",
       name: "product 4",
+      date:"1982-11-26",
       category: "season 1",
       image: "product-4.jpeg",
       price: 80,
@@ -61,8 +61,8 @@ const dataShop = {
       description: "Suuuper coool!!!",
     },
     {
-      _id: "5",
       name: "product 5",
+      date:"1982-11-26",
       category: "season 1",
       image: "product-5.jpeg",
       price: 80,
@@ -72,8 +72,8 @@ const dataShop = {
       description: "Suuuper coool!!!",
     },
     {
-      _id: "6",
       name: "product 6",
+      date:"1982-11-26",
       category: "season 1",
       image: "product-6.jpeg",
       price: 80,
