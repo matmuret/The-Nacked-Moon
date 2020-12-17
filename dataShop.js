@@ -4,7 +4,7 @@ const dataShop = {
   users: [
     {
       name: "Filippo",
-      email: "filippo.moretti6@gmail",
+      email: "filippo.moretti6@gmail.com",
       password: bcrypt.hashSync("1234", 8),
       isAdmin: true,
     },
