@@ -10,6 +10,7 @@ import orderRouter from "./routers/orderRouter.js";
 dotenv.config();
 
 const app = express();
+
 app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({extended:true}));
@@ -34,6 +35,7 @@ mongoose.connection.on("open", function() {
 /* app.get("/api/Shop", (req, res) => {
   res.send(dataShop.products);
 }); */
+app.use('/api/uploads', express.static('productsupload'));
 app.use("/api/users", userRouter);
 app.use("/api/Shop", productRouter);
 app.use("/api/orders", orderRouter);
