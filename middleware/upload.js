@@ -1,4 +1,4 @@
-const multer = require("multer")
+import multer from 'multer';
 
 /**
  * WHERE DOES MULTER STORE FILE INFORMATION?
@@ -7,16 +7,21 @@ const multer = require("multer")
  */
 // MULTER configuration
 const storage = multer.diskStorage({
-  destination: "productsupload",
+  destination: 'productsupload',
   // filename function will construct a filename
   // that will be used to store the file
   filename: (req, file, done) => {
-    let filenameUpload = `${req.user._id}-${file.originalname}`
-    done(null, filenameUpload)
-  }
-})
+    let date = new Date();
+    let filenameUpload = `${date.getTime()}-${
+      file.originalname
+    }`;
+    done(null, filenameUpload);
+  },
+});
+
 // File upload middleware
 const upload = multer({
-  storage: storage
-})
-module.exports = upload
+  storage: storage,
+});
+
+export default upload;
