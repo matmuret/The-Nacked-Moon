@@ -6,14 +6,15 @@ import userRouter from "./routers/userRouter.js";
 import dotenv from 'dotenv';
 import cors from  'cors';
 import orderRouter from "./routers/orderRouter.js";
-
+import galleryRouter from "./routers/galleryRouter.js";
+import Bodyparser from "body-parser"
 dotenv.config();
 
 const app = express();
 
-app.use(express.json());
 app.use(cors());
-app.use(express.urlencoded({extended:true}));
+app.use(Bodyparser.json());
+app.use(Bodyparser.urlencoded({extended:true}));
 mongoose.connect(process.env.MONGODB_URL || "mongodb://localhost/thenakedmoon", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -35,9 +36,12 @@ mongoose.connection.on("open", function() {
 /* app.get("/api/Shop", (req, res) => {
   res.send(dataShop.products);
 }); */
-app.use('/api/uploads', express.static('productsupload'));
+
+app.use('/api/photouploads', express.static('photosupload'));
+app.use('/api/productsupload', express.static('productsupload'));
+app.use("/api/gallery", galleryRouter)
 app.use("/api/users", userRouter);
-app.use("/api/Shop", productRouter);
+app.use("/api/Shop",productRouter);
 app.use("/api/orders", orderRouter);
 app.get('/api/config/paypal',(req,res)=>{
   res.send(process.env.PAYPAL_CLIENT_ID || 'sb');

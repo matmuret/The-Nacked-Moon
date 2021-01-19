@@ -4,26 +4,27 @@ import mongoose from "mongoose";
 import dataShop from "../dataShop.js";
 import Product from "../models/productModel.js";
 import multer from "multer";
-import path from'path';
+/* import path from'path'; */
+
 /* import  { path }  from "../models/productModel" */
 
 const productRouter = express.Router();
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "productsupload/");
+    cb(null, "productsupload");
   },
   filename: function (req, file, cb) {
-    console.log(file);
+    console.log('bla');
     /* cb(null, new Date().toISOString() + file.originalname); */
     /* let fileName = file.originalname.replace(/\./g, "-") */
-    cb(null, Date.now() + path.extname(file.originalname));
+    cb(null, Date.now() + (file.originalname));
   },
 });
 
 const fileFilter = (req, file, cb) => {
   // reject a file
-  if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
+  if (file.mimetype === "image/jpeg" || file.mimetype === "image/jpg" ||file.mimetype === "image/png") {
     cb(null, true);
   } else {
     cb(null, false);
@@ -74,17 +75,19 @@ productRouter.get(
 //add products to the DB
 productRouter.post("/", upload.single("image"), (req, res, next) => {
   console.log(req.file);
+  console.log(req.body)
+  
   const product = new Product({
     _id: new mongoose.Types.ObjectId(),
     name: req.body.name,
-    date: req.body.date,
-    category: req.body.category,
+    /* date: req.body.date,
+    category: req.body.category, */
     image: req.file.path,
-    price: req.body.price,
+    /* price: req.body.price,
     countInStock: req.body.countInStock,
     rating: req.body.rating,
     numReviews: req.body.numReviews,
-    description: req.body.description,
+    description: req.body.description, */
   });
   product
     .save()
@@ -94,13 +97,14 @@ productRouter.post("/", upload.single("image"), (req, res, next) => {
         message: "Created product successfully",
         createdProduct: {
           name: result.name,
-          price: result.price,
+          image: result.image,
+          /* price: result.price,
           _id: result._id,
           price: req.body.price,
           countInStock: req.body.countInStock,
           rating: req.body.rating,
           numReviews: req.body.numReviews,
-          description: req.body.description,
+          description: req.body.description, */
           request: {
             type: "GET",
             url: "http://localhost:5000/api/Shop" + result._id,
@@ -116,3 +120,4 @@ productRouter.post("/", upload.single("image"), (req, res, next) => {
     });
 });
 export default productRouter;
+

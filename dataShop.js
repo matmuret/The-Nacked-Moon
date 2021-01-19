@@ -83,5 +83,7 @@ const dataShop = {
       description: "Suuuper coool!!!",
     },
   ],
+  photos:[]
 };
+
 export default dataShop;
