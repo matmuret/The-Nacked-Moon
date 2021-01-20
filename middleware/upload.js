@@ -12,6 +12,7 @@ const storage = multer.diskStorage({
   // that will be used to store the file
   filename: (req, file, done) => {
     let date = new Date();
+    console.log(req.file, 'try')
     let filenameUpload = `${date.getTime()}-${
       file.originalname
     }`;
