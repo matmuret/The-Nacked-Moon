@@ -77,8 +77,9 @@ galleryRouter.post("/", upload.single("image"), (req, res, next) => {
   const photo = new Photo({
     _id: new mongoose.Types.ObjectId(),
     albumName:req.body.albumName,
-    image:req.file.path,
+    image: `${req.protocol}://${req.get('host')}/api/photosupload/${req.file.filename}`, 
     category:req.body.category,
+    description: req.body.description,
   });
   photo
     .save()
@@ -88,11 +89,13 @@ galleryRouter.post("/", upload.single("image"), (req, res, next) => {
         message: "Created photo successfully",
         createdPhoto: {
           _id: result._id,
+          image: result.image,
           albumName:result.albumName,
           category:result.category,
+          description: result.description,
           request: {
             type: "GET",
-            url: "http://localhost:5000/api/gallery" + result._id,
+            url: "http://localhost:5000/api/photoup" + result._id,
           },
         },
       });

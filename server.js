@@ -37,9 +37,9 @@ mongoose.connection.on("open", function() {
   res.send(dataShop.products);
 }); */
 
-app.use('/api/photouploads', express.static('photosupload'));
+app.use('/api/photosupload', express.static('photosupload'));
 app.use('/api/productsupload', express.static('productsupload'));
-app.use("/api/gallery", galleryRouter)
+app.use("/api/photoup", galleryRouter)
 app.use("/api/users", userRouter);
 app.use("/api/Shop",productRouter);
 app.use("/api/orders", orderRouter);
