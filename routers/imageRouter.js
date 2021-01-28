@@ -2,27 +2,26 @@ import express from "express";
 import expressAsyncHandler from "express-async-handler";
 import mongoose from "mongoose";
 import dataShop from "../dataShop.js";
-import Photo from "../models/galleryModel.js";
-import multer from "multer";
-import path from'path';
+import Image from "../models/imageModel.js";
+
+import photoUpload from '../middleware/photoUpload.js'
 
 
-const galleryRouter = express.Router();
+const imageRouter = express.Router();
 
-const storage = multer.diskStorage({
+/* const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "photosupload/");
   },
   filename: function (req, file, cb) {
     console.log(file);
-    /* cb(null, new Date().toISOString() + file.originalname); */
-    /* let fileName = file.originalname.replace(/\./g, "-") */
+    
     cb(null, Date.now() + path.extname(file.originalname));
   },
 });
 
 const fileFilter = (req, file, cb) => {
-  // reject a file
+  
   if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
     cb(null, true);
   } else {
@@ -35,18 +34,18 @@ const upload = multer({
     fileSize: 1024 * 1024 * 5,
   },
   fileFilter: fileFilter,
-});
+}); */
 
 // send products to the frontend
-galleryRouter.get(
+imageRouter.get(
   "/",
   expressAsyncHandler(async (req, res) => {
-    const photos = await Photo.find({});
+    const photos = await Image.find({});
     res.send(photos);
   })
 );
 
-galleryRouter.get(
+imageRouter.get(
   "/seed",
   expressAsyncHandler(async (req, res) => {
     try {
@@ -54,15 +53,15 @@ galleryRouter.get(
     } catch (e) {
       console.log(e);
     }
-    const createdPhoto = await Photo.insertMany(dataShop.photos);
+    const createdPhoto = await Image.insertMany(dataShop.photos);
     res.send({ createdPhoto });
   })
 );
 
-galleryRouter.get(
+imageRouter.get(
   "/:id",
   expressAsyncHandler(async (req, res) => {
-    const photo = await Photo.findById(req.params.id);
+    const photo = await Image.findById(req.params.id);
     if (photo) {
       res.send(photo);
     } else {
@@ -72,7 +71,7 @@ galleryRouter.get(
 );
 
 //add photos to the DB
-galleryRouter.post("/", upload.single("image"), (req, res, next) => {
+imageRouter.post("/", photoUpload.single("image"), (req, res, next) => {
   console.log(req.file);
   const photo = new Photo({
     _id: new mongoose.Types.ObjectId(),
@@ -107,4 +106,4 @@ galleryRouter.post("/", upload.single("image"), (req, res, next) => {
       });
     });
 });
-export default galleryRouter;
+export default imageRouter;

@@ -6,13 +6,15 @@ import userRouter from "./routers/userRouter.js";
 import dotenv from 'dotenv';
 import cors from  'cors';
 import orderRouter from "./routers/orderRouter.js";
-import galleryRouter from "./routers/galleryRouter.js";
+import albumRouter from "./routers/albumRouter.js";
 import Bodyparser from "body-parser"
+import morgan from'morgan'; 
 dotenv.config();
 
 const app = express();
 
 app.use(cors());
+app.use(morgan('dev'));
 app.use(Bodyparser.json());
 app.use(Bodyparser.urlencoded({extended:true}));
 mongoose.connect(process.env.MONGODB_URL || "mongodb://localhost/thenakedmoon", {
@@ -39,7 +41,7 @@ mongoose.connection.on("open", function() {
 
 app.use('/api/photosupload', express.static('photosupload'));
 app.use('/api/productsupload', express.static('productsupload'));
-app.use("/api/photoup", galleryRouter)
+app.use("/api/albumup", albumRouter)
 app.use("/api/users", userRouter);
 app.use("/api/Shop",productRouter);
 app.use("/api/orders", orderRouter);
