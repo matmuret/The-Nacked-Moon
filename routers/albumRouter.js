@@ -71,7 +71,7 @@ albumRouter.get(
 );
 
 //add photos to the DB
-albumRouter.post("/", photoUpload.array("image"), (req, res, next) => {
+albumRouter.post("/", photoUpload.array("images"), (req, res, next) => {
   console.log(req.files);
   const imgUrl=req.files.map((file)=>{
     return `${req.protocol}://${req.get('host')}/api/photosupload/${file.filename}`
@@ -80,7 +80,7 @@ albumRouter.post("/", photoUpload.array("image"), (req, res, next) => {
   const album = new Album({
     _id: new mongoose.Types.ObjectId(),
     albumName:req.body.albumName,
-    image: imgUrl,
+    images: imgUrl,
     category:req.body.category,
     description: req.body.description,
   });
@@ -92,7 +92,7 @@ albumRouter.post("/", photoUpload.array("image"), (req, res, next) => {
         message: "Created album successfully",
         createdAlbum: {
           _id: result._id,
-          image: result.image,
+          images: result.images,
           albumName:result.albumName,
           category:result.category,
           description: result.description,

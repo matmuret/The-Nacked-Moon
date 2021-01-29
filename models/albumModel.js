@@ -9,7 +9,7 @@ const albumSchema = new mongoose.Schema(
       description: { type: String, required: false },
       category:{
         type: String, required:true,
-        enum:['home','outdoors','fashion','soulsIn','projects']
+        enum:['home','outdoors','fashion','souls','projects']
       }
 
     },
