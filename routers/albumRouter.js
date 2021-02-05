@@ -59,13 +59,27 @@ albumRouter.get(
 );
 
 albumRouter.get(
+  "/bycategory",
+  expressAsyncHandler(async (req, res) => {
+    const albums = await Album.find({category: req.query.name});
+    /* console.log(albums) */
+    if (albums) {
+      res.send(albums);
+    } else {
+      res.status(404).send({ message: "Albums Not Found" });
+    }
+  })
+);
+
+albumRouter.get(
   "/:id",
   expressAsyncHandler(async (req, res) => {
     const album = await Album.findById(req.params.id);
+    console.log(album)
     if (album) {
       res.send(album);
     } else {
-      res.status(404).send({ message: "Photo Not Found" });
+      res.status(404).send({ message: "Album Not Found" });
     }
   })
 );
@@ -109,5 +123,31 @@ albumRouter.post("/", photoUpload.array("images"), (req, res, next) => {
         error: err,
       });
     });
+});
+
+albumRouter.put("/:id", photoUpload.array("images"), async (req, res, next) => {
+  
+  console.log(req.files);
+  const imgUrls=req.files.map((file)=>{
+    return `${req.protocol}://${req.get('host')}/api/photosupload/${file.filename}`
+  })
+  console.log(imgUrls)
+  const album = await Album.findOneAndUpdate({_id: req.params.id},{$push: {images: imgUrls}},{new: true});
+
+ res.status(201).json({
+  message: "Updated album successfully",
+  updatedAlbum: {
+    _id: album._id,
+    images: album.images,
+    albumName:album.albumName,
+    category:album.category,
+    description: album.description,
+    request: {
+      type: "GET",
+      url: "http://localhost:5000/api/albumup/" + album._id,
+    },
+  },
+});
+  
 });
 export default albumRouter;
