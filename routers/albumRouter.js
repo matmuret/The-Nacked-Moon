@@ -83,7 +83,18 @@ albumRouter.get(
     }
   })
 );
-
+albumRouter.delete(
+  "/delete/:id",
+  expressAsyncHandler(async (req, res) => {
+    const album = await Album.findByIdAndDelete(req.params.id);
+    console.log(album)
+    if (album) {
+      res.send(album);
+    } else {
+      res.status(404).send({ message: "Album Not Deleted" });
+    }
+  })
+);
 //add photos to the DB
 albumRouter.post("/", photoUpload.array("images"), (req, res, next) => {
   console.log(req.files);
@@ -150,4 +161,4 @@ albumRouter.put("/:id", photoUpload.array("images"), async (req, res, next) => {
 });
   
 });
-export default albumRouter;
+export default albumRouter; 

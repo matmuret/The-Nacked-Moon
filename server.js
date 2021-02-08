@@ -7,12 +7,14 @@ import dotenv from 'dotenv';
 import cors from  'cors';
 import orderRouter from "./routers/orderRouter.js";
 import albumRouter from "./routers/albumRouter.js";
-import Bodyparser from "body-parser"
+import Bodyparser from "body-parser";
+import methodOverride from 'method-override'
 import morgan from'morgan'; 
 dotenv.config();
 
 const app = express();
 
+app.use(methodOverride('_method'))
 app.use(cors());
 app.use(morgan('dev'));
 app.use(Bodyparser.json());
