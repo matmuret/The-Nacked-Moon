@@ -44,7 +44,7 @@ userRouter.post(
     const user = new User({
       name: req.body.name,
       email: req.body.email,
-      password: bcrypt.hashSync(req.body.password, 8),
+      password: bcrypt.hashSync(req.body.password , 8),
     });
     const createdUser = await user.save(); //we create a new user
     res.send({
@@ -66,6 +66,15 @@ userRouter.get(
     } else {
       res.status(404).send({ message: "User Not Found" });
     }
+  })
+);
+
+userRouter.get(
+  "/",
+  expressAsyncHandler(async (req, res) => {
+    const users = await User.find({}).exec();
+    console.log(users)
+    res.send(users);
   })
 );
 

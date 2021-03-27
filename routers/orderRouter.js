@@ -1,11 +1,22 @@
 import express from "express";
 import expressAsyncHandler from "express-async-handler";
 import Order from "../models/orderModel.js";
-import { isAuth } from "../utils.js";
+import { isAdmin, isAuth } from "../utils.js";
 
 const orderRouter = express.Router();
 
-// root=/api/orders   
+// root=/api/orders
+orderRouter.get(
+  "/",
+  isAuth,
+  isAdmin,
+
+  expressAsyncHandler(async (req, res) => {
+    const orders = await Order.find({}); /* .populate("user", "name") */ //in the 'user' collection -user is the reference in orderModel- just get the name of 'user' -BUT IS NOT WORKING!-
+    res.send(orders);
+  })
+);
+export default orderRouter;
 orderRouter.get(
   "/mine",
   isAuth,
@@ -56,6 +67,7 @@ orderRouter.get(
 orderRouter.put(
   "/:id/pay",
   isAuth,
+  isAdmin,
   expressAsyncHandler(async (req, res) => {
     const order = await Order.findById(req.params.id);
     if (order) {
@@ -67,11 +79,39 @@ orderRouter.put(
         update_time: req.body.update_time,
         email_address: req.body.email_address,
       };
-      const updatedOrder = await order.save();
+      const updateOrder = await order.save();
       res.send({ message: "Order Paid", order: updateOrder });
     } else {
       res.status(404).send({ message: "Order Nor Found" });
     }
   })
 );
-export default orderRouter;
+orderRouter.put(
+  "/:id/deliver",
+  isAuth,
+  expressAsyncHandler(async (req, res) => {
+    const order = await Order.findById(req.params.id);
+    if (order) {
+      order.isDelivered = true;
+      order.deliveredAt = Date.now();
+      
+      const updateOrder = await order.save();
+      res.send({ message: "Order Delivered", order: updateOrder });
+    } else {
+      res.status(404).send({ message: "Order Nor Found" });
+    }
+  })
+);
+orderRouter.delete(
+  "/:id",
+  isAuth,
+  expressAsyncHandler(async (req, res) => {
+    const orderId = req.params.id;
+    const order = await Order.findByIdAndDelete(orderId);
+    if (order) {
+      res.send(order);
+    } else {
+      res.status(404).send({ message: "Order Not Found" });
+    }
+  })
+);

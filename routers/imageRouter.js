@@ -4,8 +4,7 @@ import mongoose from "mongoose";
 import dataShop from "../dataShop.js";
 import Image from "../models/imageModel.js";
 
-import photoUpload from '../middleware/photoUpload.js'
-
+import photoUpload from "../middleware/photoUpload.js";
 
 const imageRouter = express.Router();
 
@@ -75,9 +74,11 @@ imageRouter.post("/", photoUpload.single("image"), (req, res, next) => {
   console.log(req.file);
   const photo = new Photo({
     _id: new mongoose.Types.ObjectId(),
-    albumName:req.body.albumName,
-    image: `${req.protocol}://${req.get('host')}/api/photosupload/${req.file.filename}`, 
-    category:req.body.category,
+    albumName: req.body.albumName,
+    image: `${req.protocol}://${req.get("host")}/api/photosupload/${
+      req.file.filename
+    }`,
+    category: req.body.category,
     description: req.body.description,
   });
   photo
@@ -89,8 +90,8 @@ imageRouter.post("/", photoUpload.single("image"), (req, res, next) => {
         createdPhoto: {
           _id: result._id,
           image: result.image,
-          albumName:result.albumName,
-          category:result.category,
+          albumName: result.albumName,
+          category: result.category,
           description: result.description,
           request: {
             type: "GET",
@@ -106,4 +107,16 @@ imageRouter.post("/", photoUpload.single("image"), (req, res, next) => {
       });
     });
 });
+
+imageRouter.delete(
+  "/delete/:id",
+  expressAsyncHandler(async (req, res) => {
+    const photo = await Image.findByIdAndDelete(req.params.id);
+    if (photo) {
+      res.send(photo);
+    } else {
+      res.status(404).send({ message: "Photo Not Found" });
+    }
+  })
+);
 export default imageRouter;

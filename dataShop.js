@@ -12,7 +12,7 @@ const dataShop = {
       name: "John",
       email: "filippo.cicco6@gmail",
       password: bcrypt.hashSync("1234", 8),
-      isAdmin: true,
+      isAdmin: false,
     },
   ],
   products: [
