@@ -10,6 +10,7 @@ import albumRouter from "./routers/albumRouter.js";
 import Bodyparser from "body-parser";
 import methodOverride from 'method-override'
 import morgan from'morgan'; 
+import path from 'path'
 dotenv.config();
 
 const app = express();
@@ -43,6 +44,14 @@ mongoose.connection.on("open", function() {
 
 app.use('/api/photosupload', express.static('photosupload'));
 app.use('/api/productsupload', express.static('productsupload'));
+//Set static assets
+app.use(express.static(path.join(__dirname, '/Frontend/build')))
+app.get('*',(req,res)=>{
+  res.sendFile(path.join(__dirname, '/Frontend/build/index.html'))
+})
+/* app.get("/", (req, res) => {
+  res.send("Server is ready");
+}); */
 app.use("/api/albumup", albumRouter)
 app.use("/api/users", userRouter);
 app.use("/api/Shop",productRouter);
@@ -50,9 +59,7 @@ app.use("/api/orders", orderRouter);
 app.get('/api/config/paypal',(req,res)=>{
   res.send(process.env.PAYPAL_CLIENT_ID || 'sb');
 });
-app.get("/", (req, res) => {
-  res.send("Server is ready");
-});
+
   
 const port = process.env.port || 5000;
 app.listen(port, () => {
