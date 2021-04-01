@@ -5,6 +5,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "heroku-postbuild":" npm install --prefix Frontenf && npm run build --prefix Frontend",
     "start": "nodemon server.js"
   },
   "author": "",
