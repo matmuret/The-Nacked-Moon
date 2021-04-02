@@ -45,7 +45,8 @@ mongoose.connection.on("open", function() {
 app.use('/api/photosupload', express.static('photosupload'));
 app.use('/api/productsupload', express.static('productsupload'));
 //Set static assets
-app.use(express.static(path.join(__dirname, '/client/build')))
+
+app.use(express.static('client/build'));
 app.get('*',(req,res)=>{
   res.sendFile(path.join(__dirname,'/client/build/index.html'))
 })
