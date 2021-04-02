@@ -10,7 +10,8 @@ import albumRouter from "./routers/albumRouter.js";
 import Bodyparser from "body-parser";
 import methodOverride from 'method-override'
 import morgan from'morgan'; 
-import path from 'path'
+import path from 'path';
+const __dirname = path.resolve();
 dotenv.config();
 
 const app = express();
@@ -46,7 +47,7 @@ app.use('/api/photosupload', express.static('photosupload'));
 app.use('/api/productsupload', express.static('productsupload'));
 //Set static assets
 
-app.use(express.static('client/build'));
+app.use(express.static(path.join(__dirname, 'client/build')))
 app.get('*',(req,res)=>{
   res.sendFile(path.join(__dirname,'/client/build/index.html'))
 })
@@ -62,7 +63,7 @@ app.get('/api/config/paypal',(req,res)=>{
 });
 
   
-const port = process.env.PORT || 5000;
+const port = process.env.port || 5000;
 app.listen(port, () => {
   console.log(`Serve at http://localhost:${port}`);
 });
