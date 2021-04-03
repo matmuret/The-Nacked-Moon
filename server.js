@@ -47,9 +47,9 @@ app.use('/api/photosupload', express.static('photosupload'));
 app.use('/api/productsupload', express.static('productsupload'));
 //Set static assets
 
-app.use(express.static(path.join(__dirname, 'Backend/client/build')))
+app.use(express.static(path.join(__dirname, '/client/build')))
 app.get('*',(req,res)=>{
-  res.sendFile(path.join(__dirname,'Backend/client/build/index.html'))
+  res.sendFile(path.join(__dirname,'/client/build/index.html'))
 })
 /* app.get("/", (req, res) => {
   res.send("Server is ready");
