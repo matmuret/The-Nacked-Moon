@@ -48,6 +48,8 @@ app.use('/api/productsupload', express.static('productsupload'));
 //Set static assets
 
 app.use(express.static(path.join(__dirname, '/client/build')))
+app.use('/photosupload', express.static(path.join(__dirname, '/photosuploads')));
+app.use('/productsupload', express.static(path.join(__dirname, '/productsupload')));
 app.get('*',(req,res)=>{
   res.sendFile(path.join(__dirname,'/client/build/index.html'))
 })
