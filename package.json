@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "build": "cd frontend && npm install && npm run build",
-    "start": "npm start"
+    "start": "nodemon  server.js"
   },
   "author": "",
   "license": "ISC",
