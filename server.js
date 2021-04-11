@@ -22,7 +22,7 @@ app.use(morgan("dev"));
 app.use(Bodyparser.json());
 app.use(Bodyparser.urlencoded({ extended: true }));
 mongoose.connect(
-  process.env.MONGODB_URL /* || "mongodb://localhost/thenakedmoon" */,
+  process.env.MONGODB_URL || "mongodb://localhost/thenakedmoon",
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
