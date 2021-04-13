@@ -48,6 +48,18 @@ mongoose.connection.on("open", function () {
 
 app.use("/api/photosupload", express.static("photosupload"));
 app.use("/api/productsupload", express.static("productsupload"));
+
+/* app.get("/", (req, res) => {
+  res.send("Server is ready");
+}); */
+app.use("/api/albumup", albumRouter);
+app.use("/api/users", userRouter);
+app.use("/api/Shop", productRouter);
+app.use("/api/orders", orderRouter);
+app.get("/api/config/paypal", (req, res) => {
+  res.send(process.env.PAYPAL_CLIENT_ID || "sb");
+});
+
 //Set static assets
 const __dirname = path.resolve();
 if (process.env.NODE_ENV === "production") {
@@ -64,17 +76,6 @@ if (process.env.NODE_ENV === "production") {
     res.sendFile(path.join(__dirname, "/client/build", "index.html"));
   });
 }
-/* app.get("/", (req, res) => {
-  res.send("Server is ready");
-}); */
-app.use("/api/albumup", albumRouter);
-app.use("/api/users", userRouter);
-app.use("/api/Shop", productRouter);
-app.use("/api/orders", orderRouter);
-app.get("/api/config/paypal", (req, res) => {
-  res.send(process.env.PAYPAL_CLIENT_ID || "sb");
-});
-
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log(`Serve at http://localhost:${port}`);
