@@ -3,7 +3,7 @@ import expressAsyncHandler from "express-async-handler";
 import mongoose from "mongoose";
 import dataShop from "../dataShop.js";
 import Product from "../models/productModel.js";
-import upload from "../middleware/upload.js";
+import { upload } from "../middleware/upload.js";
 import { isAdmin, isAuth } from "../utils.js";
 
 const productRouter = express.Router();
@@ -98,7 +98,7 @@ productRouter.post(
 );
 productRouter.put(
   "/:id",
- 
+
   expressAsyncHandler(async (req, res) => {
     const productId = req.params.id; //get the id from the parameters
     const product = await Product.findById(productId); //get the product from the db through the id

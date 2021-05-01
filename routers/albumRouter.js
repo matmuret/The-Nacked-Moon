@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 import dataShop from "../dataShop.js";
 import Album from "../models/albumModel.js";
 
-import photoUpload from "../middleware/photoUpload.js";
+import { photoUpload } from "../middleware/photoUpload.js";
 
 mongoose.set("useFindAndModify", false);
 const albumRouter = express.Router();
@@ -88,15 +88,18 @@ albumRouter.put(
   expressAsyncHandler(async (req, res) => {
     console.log(req.params);
     const image = req.params;
-    console.log(JSON.stringify(image).substring(10,JSON.stringify(image).length -1))
-    const filterAlbum = await Album.filter(list => list !== image)
-    console.log(filterAlbum)
-    const album = await Album.findOneAndUpdate(
-    /* {images: { $in: [JSON.stringify(image).substring(10,36)] }}, */
+    console.log(
+      JSON.stringify(image).substring(10, JSON.stringify(image).length - 1)
+    );
+    const filterAlbum = await Album.filter((list) => list !== image);
+    console.log(filterAlbum);
+    const album = await Album
+      .findOneAndUpdate
+      /* {images: { $in: [JSON.stringify(image).substring(10,36)] }}, */
       /* { $pull: {  images: { $in: [JSON.stringify(image).substring(10,36)] }} },
       { multi: true } */
       /*  {useFindAndModify:false} */
-    );
+      ();
 
     /* console.log(album) */
     if (album) {

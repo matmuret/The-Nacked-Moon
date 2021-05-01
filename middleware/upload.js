@@ -1,4 +1,6 @@
-import multer from 'multer';
+import multer from "multer";
+import Datauri from "datauri";
+import path from "path";
 
 /**
  * WHERE DOES MULTER STORE FILE INFORMATION?
@@ -6,10 +8,10 @@ import multer from 'multer';
  * req.files => for multiple files
  */
 // MULTER configuration
-const storage = multer.diskStorage({
-  destination: 'productsupload',
-  // filename function will construct a filename
-  // that will be used to store the file
+// filename function will construct a filename
+// that will be used to store the file
+/* const storage = multer.diskStorage({
+  destination: 'productsupload', 
   filename: (req, file, done) => {
     let date = new Date();
     console.log(req.file, 'try')
@@ -18,11 +20,17 @@ const storage = multer.diskStorage({
     }`;
     done(null, filenameUpload);
   },
-});
+}); */
 
 // File upload middleware
-const upload = multer({
+/* const upload = multer({
   storage: storage,
-});
+}); */
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
+const dUri = new Datauri();
 
-export default upload;
+const dataUri = (req) =>
+  dUri.format(path.extname(req.file.originalname).toString(), req.file.buffer);
+
+export { upload, dataUri };
